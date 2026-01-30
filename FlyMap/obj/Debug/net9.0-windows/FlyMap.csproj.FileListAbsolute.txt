@@ -37,3 +37,4 @@ C:\Users\Doryan\source\repos\FlyMap\FlyMap\obj\Debug\net9.0-windows\refint\FlyMa
 C:\Users\Doryan\source\repos\FlyMap\FlyMap\obj\Debug\net9.0-windows\FlyMap.pdb
 C:\Users\Doryan\source\repos\FlyMap\FlyMap\obj\Debug\net9.0-windows\FlyMap.genruntimeconfig.cache
 C:\Users\Doryan\source\repos\FlyMap\FlyMap\obj\Debug\net9.0-windows\ref\FlyMap.dll
+C:\Users\Doryan\source\repos\FlyMap\FlyMap\obj\Debug\net9.0-windows\FlyMap.sourcelink.json

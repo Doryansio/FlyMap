@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Background="#f0f0f0" Margin="10,10,10,10">
             <TextBlock Text=" Detail du vol"  FontSize="20" FontWeight="Bold" Margin="0,0,0,20" />
-                <StackPanel>
+            <StackPanel>
                 <TextBlock Text="Avion : " Margin="0,5"/>
                 <TextBlock Text="{Binding VolActuel.Appareil.Modele}"/>
             </StackPanel>
@@ -30,6 +30,8 @@
             <TextBlock x:Name="TxtPassagers" Text="Passagers : --" Margin="0,5"/>
             <Button Content="Tracer Paris - NY" Click="BtnTracer_Click" Margin="0,20,0,0" />
             <Button Content="Tracer Paris - Marseille" Click="BtnTracer_Click" Margin="0, 20, 0,0 "/>
+            <ComboBox ItemsSource="{Binding Aeroports}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAeroport, Mode=OneWay}" Width="120"/>
+            <ComboBox ItemsSource="{Binding Aeroports}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAeroport, Mode=OneWay}" Width="120"/>
 
         </StackPanel>
         <gmap:GMapControl Grid.Column="1" x:Name="MainMap"/>

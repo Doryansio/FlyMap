@@ -23,6 +23,10 @@ namespace FlyMap
         private System.Windows.Threading.DispatcherTimer _flightTimer;
         private int _currentPointIndex = 0;
         private List<PointLatLng> _pointsAnimation; // les point du trajet sont stocké ici
+        public List<Aeroport> Aeroports {  get; set; }
+        public Aeroport SelectedAirport { get; set;}
+        
+        
         private GMapMarker _avionMarker;
         // propriete publique pour le volActuel
 
@@ -32,6 +36,14 @@ namespace FlyMap
            
             InitializeComponent();
             InitializeMap();
+            Aeroports = new List<Aeroport>
+            {
+                new Aeroport {ID = 1, Name = "CDG", Longitude = 2.55000, Latitude = 49.01280 },
+                new Aeroport {ID = 2, Name = "New-York", Longitude = -73.780968, Latitude = 40.641766 },
+                new Aeroport {ID = 3, Name = "Marseille", Longitude = 5.21500, Latitude = 43.436944}
+            };
+            SelectedAirport = Aeroports[0];
+            
 
             this.DataContext = this;
             
