@@ -68,7 +68,7 @@
               "RelativeDocumentMoniker": "FlyMap\\Modele\\Aeroport.cs",
               "ToolTip": "C:\\Users\\Doryan\\source\\repos\\FlyMap\\FlyMap\\Modele\\Aeroport.cs",
               "RelativeToolTip": "FlyMap\\Modele\\Aeroport.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-30T21:15:38.943Z",
               "EditorCaption": ""
@@ -81,7 +81,7 @@
               "RelativeDocumentMoniker": "FlyMap\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\Doryan\\source\\repos\\FlyMap\\FlyMap\\MainWindow.xaml.cs",
               "RelativeToolTip": "FlyMap\\MainWindow.xaml.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAQwC4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADwAAAAAAAAAAADwv0sAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-08T19:30:10.298Z",
               "EditorCaption": ""
@@ -96,7 +96,8 @@
               "RelativeToolTip": "FlyMap\\Modele\\Passager.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-08T20:29:31.629Z"
+              "WhenOpened": "2026-01-08T20:29:31.629Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -106,7 +107,7 @@
               "RelativeDocumentMoniker": "FlyMap\\Modele\\Vol.cs",
               "ToolTip": "C:\\Users\\Doryan\\source\\repos\\FlyMap\\FlyMap\\Modele\\Vol.cs",
               "RelativeToolTip": "FlyMap\\Modele\\Vol.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAABMAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-08T20:52:18.285Z",
               "EditorCaption": ""

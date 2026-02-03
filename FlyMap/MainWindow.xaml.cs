@@ -65,60 +65,27 @@ namespace FlyMap
 
         private void BtnTracer_Click(object sender, RoutedEventArgs e)
         {
-            MainMap.Markers.Clear(); // evite d'avoir plusieurs marker surposé
-            _currentPointIndex = 0;
-            //Avion avion = new Avion(01, "airbus test", "av-073-aj", 50, 300.00, 14500.0);
-            this.VolActuel = new Vol("10a530", new Avion(01, "airbus test", "av-073-aj", 50, 300.00, 14500.0), 49.01280, 2.55000, 40.641766, -73.780968);
-            _pointsAnimation = GenererPointsGrandCercle(VolActuel.DepartLat, VolActuel.DepartLng, VolActuel.ArriveLat, VolActuel.ArriveLng, 100);
+            if (Depart.SelectedItem == null || Arrive.SelectedItem == null) 
+            {
+                MessageBox.Show("Veuillez selectionner un Aeroport de depart et d'arrivé.");
+                return;
+            }
+            if (Depart.SelectedItem == Arrive.SelectedItem)
+            {
+                MessageBox.Show("L'aeroport de depart et d'arrivé sont identique.");
+                return;
+            }
 
-            GMapRoute route = new GMapRoute(_pointsAnimation);
-            route.Shape = new System.Windows.Shapes.Path() { Stroke = Brushes.DodgerBlue, StrokeThickness = 3 };
-            MainMap.Markers.Add(route);
-
-            //creation de l'avion au point de depart avec index a 0
-            _avionMarker = new GMapMarker(_pointsAnimation[0]);
-            System.Windows.Controls.Image avionImg = new System.Windows.Controls.Image();
-
-            avionImg.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("C:\\Users\\Doryan\\source\\repos\\FlyMap\\FlyMap\\Image\\avion.png"));
-            avionImg.Width = 14;
-            avionImg.Height = 14;
-            avionImg.ToolTip = $"Vol {VolActuel.NumVol}";
+            Aeroport aeroportDepart = (Aeroport)Depart.SelectedItem;
+            Aeroport aeroportArrive = (Aeroport)Arrive.SelectedItem;
             
-            avionImg.RenderTransformOrigin = new Point(0.5, 0.5);
-
-            _avionMarker.Shape = avionImg;
-            
-            _avionMarker.Offset = new Point(-7, -7);
-            MainMap.Markers.Add(_avionMarker);
-
-            //lancement de l'animation 
-            StartFlightAnimation();
-
+            this.VolActuel = new Vol("1053", new Avion(01, "airbus test", "av-073-aj", 50, 300.00, 14500.0), aeroportDepart.Latitude, aeroportDepart.Longitude,
+                aeroportArrive.Latitude, aeroportArrive.Longitude);
+                
             this.DataContext = null;
             this.DataContext = this;
 
-            //// 3. Calcul des points de la courbe
-            //List<PointLatLng> pointsDeLaCourbe = GenererPointsGrandCercle(
-            //    VolActuel.DepartLat, VolActuel.DepartLng,
-            //    VolActuel.ArriveLat, VolActuel.ArriveLng,
-            //    50);
-
-            //// 4. CRÉATION DE LA ROUTE (Version WPF)
-            //// En WPF, GMapRoute hérite de GMapMarker !
-            //GMapRoute routeVisuelle = new GMapRoute(pointsDeLaCourbe);
-
-            //// On définit le style de la ligne
-            //routeVisuelle.Shape = new System.Windows.Shapes.Path()
-            //{
-            //    Stroke = System.Windows.Media.Brushes.DodgerBlue,
-            //    StrokeThickness = 3,
-            //    ToolTip = "Vol Paris - New York"
-            //};
-
-            //// 5. AJOUT DIRECT À LA CARTE
-            //MainMap.Markers.Add(routeVisuelle);
-
-            
+            TracerVol(VolActuel);
 
             // Zoom automatique
             MainMap.ZoomAndCenterMarkers(null);
@@ -166,7 +133,7 @@ namespace FlyMap
         }
         private void StartFlightAnimation()
         {
-            // si u ntimer existe deja on l'arrete
+            // si un timer existe deja on l'arrete
             if(_flightTimer != null) _flightTimer.Stop();
 
             _flightTimer = new System.Windows.Threading.DispatcherTimer();
@@ -174,6 +141,11 @@ namespace FlyMap
             _flightTimer.Tick += AnimationStep;
             _flightTimer.Start();
         }
+        /// <summary>
+        /// génére l'animation du deplacement de l'avion sur la courbe
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AnimationStep(object sender, EventArgs e)
         {
             if(_currentPointIndex < _pointsAnimation.Count -1)
@@ -201,6 +173,37 @@ namespace FlyMap
                 _flightTimer.Stop();
                 MessageBox.Show("Le vol est terminé");
             }
+        }
+
+        private void TracerVol(Vol leVol)
+        {
+            MainMap.Markers.Clear(); // evite d'avoir plusieurs marker surposé
+            _currentPointIndex = 0;
+            _pointsAnimation = GenererPointsGrandCercle(VolActuel.DepartLat, VolActuel.DepartLng, VolActuel.ArriveLat, VolActuel.ArriveLng, 100);
+
+            GMapRoute route = new GMapRoute(_pointsAnimation);
+            route.Shape = new System.Windows.Shapes.Path() { Stroke = Brushes.DodgerBlue, StrokeThickness = 3 };
+            MainMap.Markers.Add(route);
+
+            //creation de l'avion au point de depart avec index a 0
+            _avionMarker = new GMapMarker(_pointsAnimation[0]);
+            System.Windows.Controls.Image avionImg = new System.Windows.Controls.Image();
+
+            avionImg.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("C:\\Users\\Doryan\\source\\repos\\FlyMap\\FlyMap\\Image\\avion.png"));
+            avionImg.Width = 14;
+            avionImg.Height = 14;
+            avionImg.ToolTip = $"Vol {VolActuel.NumVol}";
+
+            avionImg.RenderTransformOrigin = new Point(0.5, 0.5);
+
+            _avionMarker.Shape = avionImg;
+
+            _avionMarker.Offset = new Point(-7, -7);
+            MainMap.Markers.Add(_avionMarker);
+
+            //lancement de l'animation 
+            StartFlightAnimation();
+
         }
     }
 
