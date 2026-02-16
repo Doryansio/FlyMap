@@ -163,7 +163,7 @@ namespace FlyMap
                 //recuperation de l'image (element graphique)
                 System.Windows.UIElement monImgAvion = _avionMarker.Shape;
 
-                monImgAvion.RenderTransform = new RotateTransform(angleCap);
+                monImgAvion.RenderTransform = new RotateTransform(angleCap - 45); // permet de changer l'orientation de l'image PNG pour que le la direction de l'avion soit dynamique 
 
                 _currentPointIndex++;
             }
