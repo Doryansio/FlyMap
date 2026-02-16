@@ -11,10 +11,10 @@ namespace FlyMap.Modele
         public string NumVol {  get; set; }
         public Avion Appareil { get; set; }
         public List<Passager> Passager { get; set; }
-        public double DepartLat { get; set; }
-        public double DepartLng { get; set; }
-        public double ArriveLat { get; set; }
-        public double ArriveLng { get; set; }
+        public static double DepartLat { get; set; }
+        public static double  DepartLng { get; set; }
+        public static double ArriveLat { get; set; }
+        public static double ArriveLng { get; set; }
 
 
         public Vol (string numero, Avion avion, double dLat, double dLng, double aLat, double aLng)
