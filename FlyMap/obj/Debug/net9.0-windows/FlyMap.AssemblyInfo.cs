@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlyMap")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0ad5ec273e4c2a85d5beeddf378cd9a5cb7a7698")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0b16082f3518bd04b0d7cce2f8b511c6f91b66f3")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlyMap")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlyMap")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

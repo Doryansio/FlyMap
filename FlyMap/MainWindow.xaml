@@ -29,9 +29,9 @@
             </StackPanel>
             <TextBlock x:Name="TxtPassagers" Text="Passagers : --" Margin="0,5"/>
             <Label Content="Aeroport de depart :" Target="{Binding ElementName=Depart}"/>
-            <ComboBox x:Name="Depart" ItemsSource="{Binding Aeroports}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAeroport, Mode=OneWay}" Width="120" HorizontalAlignment="Left"/>
+            <ComboBox x:Name="Depart" ItemsSource="{Binding Aeroports}" DisplayMemberPath="Name" Width="120" HorizontalAlignment="Left"/>
             <Label Content="Aeroport d'arrivée :" Target="{Binding ElementName=Depart}"/>
-            <ComboBox x:Name="Arrive" ItemsSource="{Binding Aeroports}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedAeroport, Mode=OneWay}" Width="120" HorizontalAlignment="Left"/>
+            <ComboBox x:Name="Arrive" ItemsSource="{Binding Aeroports}" DisplayMemberPath="Name" Width="120" HorizontalAlignment="Left"/> <!--SelectedItem="{Binding SelectedAeroport, Mode=OneWay}"-->
             <Button Click="BtnTracer_Click" Margin="0,20,0,0">
                 <Button.Content>
                     <TextBlock>

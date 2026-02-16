@@ -151,8 +151,9 @@ namespace FlyMap
             if(_currentPointIndex < _pointsAnimation.Count -1)
             {
                 //on deplace le marqueur au point suivant
-                PointLatLng pointActuel = _pointsAnimation[_currentPointIndex];
-                PointLatLng pointSuivant = _pointsAnimation[_currentPointIndex +1];
+                PointLatLng pointActuel = _pointsAnimation[_currentPointIndex ];
+                Console.WriteLine(pointActuel.ToString());
+                PointLatLng pointSuivant = _pointsAnimation[_currentPointIndex + 1];
 
                 //Deplacement
                 _avionMarker.Position = pointActuel;
@@ -163,7 +164,7 @@ namespace FlyMap
                 //recuperation de l'image (element graphique)
                 System.Windows.UIElement monImgAvion = _avionMarker.Shape;
 
-                monImgAvion.RenderTransform = new RotateTransform(angleCap - 45); // permet de changer l'orientation de l'image PNG pour que le la direction de l'avion soit dynamique 
+                monImgAvion.RenderTransform = new RotateTransform(angleCap -45); // permet de changer l'orientation de l'image PNG pour que le la direction de l'avion soit dynamique 
 
                 _currentPointIndex++;
             }
