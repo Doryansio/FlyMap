@@ -11,9 +11,9 @@ namespace FlyMap.Modele
         public string NumVol {  get; set; }
         public Avion Appareil { get; set; }
         public List<Passager> Passager { get; set; }
-        public double DepartLat { get; set; }
-        public double DepartLng { get; set; }
-        public double ArriveLat { get; set; }
+        public  double DepartLat { get; set; }
+        public  double  DepartLng { get; set; }
+        public  double ArriveLat { get; set; }
         public double ArriveLng { get; set; }
 
 
