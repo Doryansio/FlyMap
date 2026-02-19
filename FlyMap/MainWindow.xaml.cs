@@ -1,4 +1,11 @@
-﻿using System.Text;
+﻿using FlyMap.Modele;
+using FlyMap.Services;
+using GMap.NET;
+using GMap.NET.MapProviders;
+using GMap.NET.WindowsPresentation;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,10 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using FlyMap.Modele;
-using GMap.NET;
-using GMap.NET.MapProviders;
-using GMap.NET.WindowsPresentation;
 
 namespace FlyMap
 {
@@ -76,19 +79,36 @@ namespace FlyMap
                 return;
             }
 
+            
+            
+
             Aeroport aeroportDepart = (Aeroport)Depart.SelectedItem;
             Aeroport aeroportArrive = (Aeroport)Arrive.SelectedItem;
             
             this.VolActuel = new Vol("1053", new Avion(01, "airbus test", "av-073-aj", 50, 300.00, 14500.0), aeroportDepart.Latitude, aeroportDepart.Longitude,
                 aeroportArrive.Latitude, aeroportArrive.Longitude);
-                
+
+            double distance = CalculateurDistance.CalculDistance(VolActuel.DepartLng, VolActuel.ArriveLng, VolActuel.DepartLat, VolActuel.ArriveLat);
+
             this.DataContext = null;
             this.DataContext = this;
 
-            TracerVol(VolActuel);
+            if(distance > VolActuel.Appareil.DistanceMax)
+            {
+                MessageBox.Show("vous n'aurez pas assez d'autonomie pour ce vol !","erreur" );
+                
+            }
+            else 
+            {
+                 TracerVol(VolActuel);
+            }
 
+            
             // Zoom automatique
             MainMap.ZoomAndCenterMarkers(null);
+
+            Debug.WriteLine($"[TEST] la distance entre le depart et l'arrivé est de {distance} km");
+            Debug.WriteLine($"[TEST l'autonomie de reel de l'avion est de {VolActuel.Appareil.DistanceMax} km");
         }
 
         // Cette méthode calcule les points intermédiaires pour faire une courbe
