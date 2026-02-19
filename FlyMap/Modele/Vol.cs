@@ -17,10 +17,10 @@ namespace FlyMap.Modele
         public double ArriveLng { get; set; }
 
 
-        public Vol (string numero, Avion avion, double dLat, double dLng, double aLat, double aLng)
+        public Vol (string numero, Avion appareil, double dLat, double dLng, double aLat, double aLng)
         {
             NumVol = numero;
-            Appareil = avion;
+            Appareil = appareil;
             DepartLat = dLat;
             DepartLng = dLng;
             ArriveLat = aLat;
