@@ -13,7 +13,7 @@ namespace FlyMap.Tests
             double longitudeNY = -73.780968;
             double latitudeNY = 40.641766;
 
-            double distanceAttenduParisNY = 0;
+            double distanceAttenduParisNY = 5834.00;
             int margeErreur = 10;
 
             double distanceCalculee = CalculateurDistance.CalculDistance(longitudeParis, longitudeNY, latitudeParis, latitudeNY);
