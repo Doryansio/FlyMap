@@ -13,4 +13,10 @@
     <PackageReference Include="GMap.NET.WinPresentation" Version="2.1.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="api_key.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

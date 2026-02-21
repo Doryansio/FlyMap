@@ -4,6 +4,7 @@ using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsPresentation;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
@@ -12,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -23,11 +25,14 @@ namespace FlyMap
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly HttpClient _httpClient = new HttpClient();
+        private  List<AeroportApi> _tousLesAeroports;
         private System.Windows.Threading.DispatcherTimer _flightTimer;
         private int _currentPointIndex = 0;
         private List<PointLatLng> _pointsAnimation; // les point du trajet sont stocké ici
         public List<Aeroport> Aeroports {  get; set; }
         public Aeroport SelectedAirport { get; set;}
+        
         
         
         private GMapMarker _avionMarker;
@@ -79,11 +84,8 @@ namespace FlyMap
                 return;
             }
 
-            
-            
-
-            Aeroport aeroportDepart = (Aeroport)Depart.SelectedItem;
-            Aeroport aeroportArrive = (Aeroport)Arrive.SelectedItem;
+            AeroportApi aeroportDepart = (AeroportApi)Depart.SelectedItem;
+            AeroportApi aeroportArrive = (AeroportApi)Arrive.SelectedItem;
             
             this.VolActuel = new Vol("1053", new Avion(01, "airbus test", "av-073-aj", 50, 300.00, 14500.0), aeroportDepart.Latitude, aeroportDepart.Longitude,
                 aeroportArrive.Latitude, aeroportArrive.Longitude);
@@ -111,46 +113,20 @@ namespace FlyMap
             Debug.WriteLine($"[TEST l'autonomie de reel de l'avion est de {VolActuel.Appareil.DistanceMax} km");
         }
 
-        // Cette méthode calcule les points intermédiaires pour faire une courbe
-        private List<PointLatLng> GenererPointsGrandCercle(double lat1, double lon1, double lat2, double lon2, int nbPoints)
+        private async void AeroportLoader_CLick(object sender, RoutedEventArgs e)
         {
-            List<PointLatLng> chemin = new List<PointLatLng>();
+            var result = await FournisseurAeroport.GetAeroportsAsync(_httpClient);
 
-            // 1. Conversion des degrés en Radians (les maths aiment les radians)
-            double d2r = Math.PI / 180.0;
-            double r2d = 180.0 / Math.PI;
+            _tousLesAeroports = result.AeroportApis;
+            Depart.ItemsSource = _tousLesAeroports;
+            Depart.DisplayMemberPath = "Name";
+            Arrive.ItemsSource = _tousLesAeroports;
+            Arrive.DisplayMemberPath = "Name";
+            MessageBox.Show($"{_tousLesAeroports.Count} aeroport trouvée");
 
-            double phi1 = lat1 * d2r;
-            double lam1 = lon1 * d2r;
-            double phi2 = lat2 * d2r;
-            double lam2 = lon2 * d2r;
-
-            // 2. Calcul de la distance angulaire entre les deux points (Formule de Haversine)
-            double delta = 2 * Math.Asin(Math.Sqrt(Math.Pow(Math.Sin((phi1 - phi2) / 2), 2) +
-                           Math.Cos(phi1) * Math.Cos(phi2) * Math.Pow(Math.Sin((lam1 - lam2) / 2), 2)));
-
-            // 3. Boucle pour créer chaque petit point de la courbe
-            for (int i = 0; i <= nbPoints; i++)
-            {
-                double f = (double)i / nbPoints; // f va de 0 (départ) à 1 (arrivée)
-
-                // Algorithme d'interpolation sphérique (Slerp)
-                double A = Math.Sin((1 - f) * delta) / Math.Sin(delta);
-                double B = Math.Sin(f * delta) / Math.Sin(delta);
-
-                double x = A * Math.Cos(phi1) * Math.Cos(lam1) + B * Math.Cos(phi2) * Math.Cos(lam2);
-                double y = A * Math.Cos(phi1) * Math.Sin(lam1) + B * Math.Cos(phi2) * Math.Sin(lam2);
-                double z = A * Math.Sin(phi1) + B * Math.Sin(phi2);
-
-                double newLat = Math.Atan2(z, Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2)));
-                double newLon = Math.Atan2(y, x);
-
-                // 4. On rajoute le point converti en degrés dans notre liste
-                chemin.Add(new PointLatLng(newLat * r2d, newLon * r2d));
-            }
-
-            return chemin;
         }
+
+        
         private void StartFlightAnimation()
         {
             // si un timer existe deja on l'arrete
@@ -200,7 +176,7 @@ namespace FlyMap
         {
             MainMap.Markers.Clear(); // evite d'avoir plusieurs marker surposé
             _currentPointIndex = 0;
-            _pointsAnimation = GenererPointsGrandCercle(VolActuel.DepartLat, VolActuel.DepartLng, VolActuel.ArriveLat, VolActuel.ArriveLng, 100);
+            _pointsAnimation = GenerationPoints.GenererPointsGrandCercle(VolActuel.DepartLat, VolActuel.DepartLng, VolActuel.ArriveLat, VolActuel.ArriveLng, 100);
 
             GMapRoute route = new GMapRoute(_pointsAnimation);
             route.Shape = new System.Windows.Shapes.Path() { Stroke = Brushes.DodgerBlue, StrokeThickness = 3 };
