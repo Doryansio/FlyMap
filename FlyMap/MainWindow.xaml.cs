@@ -43,6 +43,8 @@ namespace FlyMap
         {
            
             InitializeComponent();
+            // On force GMap à ignorer le cache local buggé et à tout prendre sur le serveur
+            //GMap.NET.GMaps.Instance.Mode = GMap.NET.AccessMode.ServerOnly;
             InitializeMap();
             Aeroports = new List<Aeroport>
             {
@@ -113,16 +115,38 @@ namespace FlyMap
             Debug.WriteLine($"[TEST l'autonomie de reel de l'avion est de {VolActuel.Appareil.DistanceMax} km");
         }
 
-        private async void AeroportLoader_CLick(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var result = await FournisseurAeroport.GetAeroportsAsync(_httpClient);
+            Chargement.Visibility = Visibility.Visible;
 
-            _tousLesAeroports = result.AeroportApis;
-            Depart.ItemsSource = _tousLesAeroports;
-            Depart.DisplayMemberPath = "Name";
-            Arrive.ItemsSource = _tousLesAeroports;
-            Arrive.DisplayMemberPath = "Name";
-            MessageBox.Show($"{_tousLesAeroports.Count} aeroport trouvée");
+            try
+            {
+                //var result = await FournisseurAeroport.GetAeroportsAsync(_httpClient);
+
+                //_tousLesAeroports = result.AeroportApis
+                //    .Where(aeroport => aeroport.Latitude > 0)
+                //    .ToList();
+                _tousLesAeroports = new List<AeroportApi>
+                {
+                    new AeroportApi { Name = "Paris (CDG)", Latitude = 49.0097, Longitude = 2.5479 },
+                    new AeroportApi { Name = "New York (JFK)", Latitude = 40.6413, Longitude = -73.7781 },
+                    new AeroportApi { Name = "Reykjavik (KEF)", Latitude = 63.9850, Longitude = -22.6056 }, // L'escale parfaite !
+                    new AeroportApi { Name = "Dakar (DSS)", Latitude = 14.6711, Longitude = -17.0733 }, // Le détour horrible
+                    new AeroportApi { Name = "Madrid (MAD)", Latitude = 40.4983, Longitude = -3.5676 }
+                };
+                Depart.ItemsSource = _tousLesAeroports;
+                Depart.DisplayMemberPath = "Name";
+                Arrive.ItemsSource = _tousLesAeroports;
+                Arrive.DisplayMemberPath = "Name";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur lors du chargement : " + ex.Message);
+            }
+            finally 
+            {
+                Chargement.Visibility = Visibility.Collapsed;
+            }
 
         }
 
@@ -160,13 +184,14 @@ namespace FlyMap
                 //recuperation de l'image (element graphique)
                 System.Windows.UIElement monImgAvion = _avionMarker.Shape;
 
-                monImgAvion.RenderTransform = new RotateTransform(angleCap -45); // permet de changer l'orientation de l'image PNG pour que le la direction de l'avion soit dynamique 
+                monImgAvion.RenderTransform = new RotateTransform(angleCap); // permet de changer l'orientation de l'image PNG pour que le la direction de l'avion soit dynamique 
 
                 _currentPointIndex++;
             }
             else
             {
                 //le vol est terminé
+                _avionMarker.Position = _pointsAnimation[_pointsAnimation.Count - 1];
                 _flightTimer.Stop();
                 MessageBox.Show("Le vol est terminé");
             }
@@ -184,16 +209,23 @@ namespace FlyMap
 
             //creation de l'avion au point de depart avec index a 0
             _avionMarker = new GMapMarker(_pointsAnimation[0]);
-            System.Windows.Controls.Image avionImg = new System.Windows.Controls.Image();
+            //System.Windows.Controls.Image avionImg = new System.Windows.Controls.Image();
+            System.Windows.Shapes.Path avionVectoriel = new System.Windows.Shapes.Path();
+            avionVectoriel.Fill = System.Windows.Media.Brushes.Black;
+            string svgData = "M21,16V14L13,9V3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5V9L2,14V16L10,13.5V19L8,20.5V22L11.5,21L15,22V20.5L13,19V13.5L21,16Z";
+            avionVectoriel.Data = System.Windows.Media.Geometry.Parse(svgData);
 
-            avionImg.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("C:\\Users\\Doryan\\source\\repos\\FlyMap\\FlyMap\\Image\\avion.png"));
-            avionImg.Width = 14;
-            avionImg.Height = 14;
-            avionImg.ToolTip = $"Vol {VolActuel.NumVol}";
 
-            avionImg.RenderTransformOrigin = new Point(0.5, 0.5);
-
-            _avionMarker.Shape = avionImg;
+            //avionImg.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("C:\\Users\\Doryan\\source\\repos\\FlyMap\\FlyMap\\Image\\avion.png"));
+            //avionImg.Stretch = System.Windows.Media.Stretch.Fill;
+            avionVectoriel.Width = 14;
+            avionVectoriel.Height = 14;
+            avionVectoriel.ToolTip = $"Vol {VolActuel.NumVol}";
+            avionVectoriel.Stretch = Stretch.Uniform;
+            avionVectoriel.RenderTransformOrigin = new Point(0.5, 0.5);
+            
+            _avionMarker.Shape = avionVectoriel;
+            
 
             _avionMarker.Offset = new Point(-7, -7);
             MainMap.Markers.Add(_avionMarker);
@@ -202,6 +234,7 @@ namespace FlyMap
             StartFlightAnimation();
 
         }
+
     }
 
 

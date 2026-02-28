@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -15,12 +16,14 @@ namespace FlyMap.Services
     {
         public static async Task<ReponseApi> GetAeroportsAsync(HttpClient httpClient)
         {
-            string key = await File.ReadAllTextAsync("api_key.txt"); ;
+            string key = await File.ReadAllTextAsync("api_key.txt");
+            key = key.Trim();
             string connexion = $"http://api.aviationstack.com/v1/airports?access_key={key}";
             var response = await httpClient.GetFromJsonAsync<ReponseApi>(connexion);
-            return response; 
-                
-            
+            Debug.WriteLine(connexion);
+            return response;
+
+
         }
     }
 }

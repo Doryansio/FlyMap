@@ -1,4 +1,5 @@
 ﻿<Window x:Class="FlyMap.MainWindow"
+        Loaded="Window_Loaded"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,12 +8,14 @@
         xmlns:local="clr-namespace:FlyMap"
         mc:Ignorable="d"
         Title="FlyTracker" Height="600" Width="1000">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Background="#f0f0f0" Margin="10,10,10,10">
+            <ProgressBar x:Name="Chargement" Height="20" Width="200" IsIndeterminate="True" Visibility="Collapsed" VerticalAlignment="Top"/>
             <TextBlock Text=" Detail du vol"  FontSize="20" FontWeight="Bold" Margin="0,0,0,20" />
             <StackPanel>
                 <TextBlock Text="Avion : " Margin="0,5"/>
@@ -41,18 +44,15 @@
                                 <Binding ElementName="Arrive" Path="SelectedItem.Name"></Binding>
                             </MultiBinding>
                         </TextBlock.Text>
-                        
+
                     </TextBlock>
-                    
+
                 </Button.Content>
             </Button>
 
-            <StackPanel>
-                <Button Click="AeroportLoader_CLick" Content="Charger les Aeroports" Margin="0,20,0,0"/>
-                
-            </StackPanel>
-
         </StackPanel>
         <gmap:GMapControl Grid.Column="1" x:Name="MainMap"/>
+
+
     </Grid>
 </Window>
